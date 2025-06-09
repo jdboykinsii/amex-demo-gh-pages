@@ -1,31 +1,86 @@
 import { Octokit } from '@octokit/core';
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
+
+const List =({items, onClickHandler}) => {
+   return (
+       <ul> {items.map((e, i) =>
+        {
+           return ( <li><a
+               key={i}
+               href={e.html_url}
+               type={e.type}
+               name={e.name}
+               download_url={e.download_url}
+               onClick={(e) => onClickHandler(e)}>{e.name}</a></li>)
+        })
+       }
+       </ul>
+   );
+}
 
 const Panel = ({...props}) => {
+    const baseURL = '/repos/jdboykinsii/amex-demo-gh-pages/contents/Files';
+    const [treeData, setTreeData] = useState([]);
+    const [staticContent, setStaticContent] = useState("");
+    const [contentRootURL, setContentRootURL] = useState('');
+    const [contentSourceURL, setContentSourceURL] = useState('');
 
-    // No, we don't post auth tokens in repo or in public.
+    // No, you shouldn't post auth tokens in repos or in public without good reason.
     // Yes, this token is short-lived and scoped for minimal access & read-only.
     const octokit = new Octokit({
-        auth: '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'
+        auth: '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'
     })
+
+    const fetchDirectoryData = useCallback(async () => {
+        const treeData = await octokit.request(`GET ${baseURL}${contentRootURL}`, {})
+            setTreeData(treeData.data);
+        }, [contentRootURL]);
 
     useEffect(() => {
-        const fetchDirectoryData = async () => {
-            const treeData = await octokit.request('GET /repos/jdboykinsii/amex-demo-gh-pages/git/trees/gh-pages', {
-                owner: 'OWNER',
-                repo: 'REPO',
-                tree_sha: 'TREE_SHA',
-                headers: {
-                    'X-GitHub-Api-Version': '2022-11-28'
-                }
-            })
+        fetchDirectoryData().catch((err) => console.error(err));
+    }, [contentRootURL])
 
-            console.log(treeData);
+    const handleClick = (evt) => {
+        evt.preventDefault();
+        const selectionType = evt.target.getAttribute('type');
+
+        if  (selectionType === "dir"){
+            let appendedPath = evt.target.getAttribute('name');
+            setContentRootURL(`${contentRootURL}/${appendedPath}`);
         }
-        fetchDirectoryData();
-    })
 
-    return <div><h1> Oh hello, Othello...</h1></div>
+        if (selectionType === "file"){
+            let sourceContentURL = evt.target.getAttribute('download_url');
+            setContentSourceURL(sourceContentURL);
+        }
+    }
+
+    const handleBackDirectoryClick = () => {
+        let oldContentRootURL = contentRootURL;
+        let truncateFromIndex = oldContentRootURL.lastIndexOf('/');
+        let newContentRootURL = oldContentRootURL.substring(0, truncateFromIndex);
+        setContentRootURL(newContentRootURL);
+    }
+
+    const Content = ({url}) => {
+        if(url !== "") {
+            fetch(url)
+                .then(resp => resp.text())
+                .then(text => {
+                    setStaticContent(text);
+                });
+        }
+
+        return <pre> {staticContent}</pre>
+    }
+
+    return <div>
+        <button onClick={() => handleBackDirectoryClick()}> Go Back A Directory</button>
+        <br />
+        <List items={treeData} onClickHandler={handleClick} />
+        <br />
+        <Content url = {contentSourceURL}/>
+    </div>
 }
 
 export default Panel;
