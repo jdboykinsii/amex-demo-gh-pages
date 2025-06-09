@@ -1,16 +1,15 @@
 {
   "files": {
     "main.css": "/amex-demo-gh-pages/static/css/main.f855e6bc.css",
-    "main.js": "/amex-demo-gh-pages/static/js/main.599580e5.js",
+    "main.js": "/amex-demo-gh-pages/static/js/main.3778b2d7.js",
     "static/js/453.1f6e8907.chunk.js": "/amex-demo-gh-pages/static/js/453.1f6e8907.chunk.js",
-    "static/media/logo.svg": "/amex-demo-gh-pages/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/amex-demo-gh-pages/index.html",
     "main.f855e6bc.css.map": "/amex-demo-gh-pages/static/css/main.f855e6bc.css.map",
-    "main.599580e5.js.map": "/amex-demo-gh-pages/static/js/main.599580e5.js.map",
+    "main.3778b2d7.js.map": "/amex-demo-gh-pages/static/js/main.3778b2d7.js.map",
     "453.1f6e8907.chunk.js.map": "/amex-demo-gh-pages/static/js/453.1f6e8907.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.f855e6bc.css",
-    "static/js/main.599580e5.js"
+    "static/js/main.3778b2d7.js"
   ]
 }
