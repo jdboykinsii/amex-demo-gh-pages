@@ -6,7 +6,7 @@ const Panel = ({...props}) => {
     // No, we don't post auth tokens in repo or in public.
     // Yes, this token is short-lived and scoped for minimal access & read-only.
     const octokit = new Octokit({
-        auth: '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'
+        auth: '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'
     })
 
     useEffect(() => {
