@@ -3,9 +3,9 @@ import {useCallback, useEffect, useState} from 'react';
 
 const List =({items, onClickHandler}) => {
    return (
-       <ul> {items.map((e, i) =>
+       <ul className="list-group"> {items.map((e, i) =>
         {
-           return ( <li><a
+           return ( <li className="list-group-item"><a
                key={i}
                href={e.html_url}
                type={e.type}
@@ -28,7 +28,7 @@ const Panel = ({...props}) => {
     // No, you shouldn't post auth tokens in repos or in public without good reason.
     // Yes, this token is short-lived and scoped for minimal access & read-only.
     const octokit = new Octokit({
-        auth: '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'
+        auth: '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'
     })
 
     const fetchDirectoryData = useCallback(async () => {
@@ -71,15 +71,31 @@ const Panel = ({...props}) => {
                 });
         }
 
-        return <pre> {staticContent}</pre>
+        return <div className="card">
+            <div className="card-body">
+                <pre><code>{staticContent}</code></pre>
+            </div>
+        </div>
     }
 
-    return <div>
-        <button onClick={() => handleBackDirectoryClick()}> Go Back A Directory</button>
-        <br />
-        <List items={treeData} onClickHandler={handleClick} />
-        <br />
-        <Content url = {contentSourceURL}/>
+    return <div className="container text-center">
+        <div className="row">
+            <div className="col">
+                <button type="button" className="btn btn-primary" onClick={() => handleBackDirectoryClick()}> Go Back A Directory</button>
+            </div>
+            <div className="col">
+                <h1> Directory Contents: </h1>
+                <br />
+                <List items={treeData} onClickHandler={handleClick} />
+            </div>
+        </div>
+        <div className="col">
+            <div className="row">
+                <h1 className="text-start"> File Contents: </h1>
+                <br />
+         <Content url = {contentSourceURL}/>
+            </div>
+        </div>
     </div>
 }
 
